@@ -1,0 +1,15 @@
+{
+  "name": "geeks_farm_batch15_code",
+  "version": "1.0.0",
+  "description": "node.js learn",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node readLine.js"
+  },
+  "author": "Yann",
+  "license": "ISC",
+  "dependencies": {
+    "validator": "^13.15.15"
+  }
+}
