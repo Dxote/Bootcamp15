@@ -1,24 +1,22 @@
-const fs = require('fs');
+import fs from 'fs';
 
-function loadJSON(filePath) {
+export function read(filePath) {
   try {
     const raw = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(raw);
   } catch (err) {
     if (err.code !== 'ENOENT') { 
-      console.error(`Error reading ${filePath}: ${err.message}`);
+      console.error("Error reading", err);
     }
     return [];
   }
 }
 
-function saveJSON(filePath, data) {
+export function write(filePath, data) {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
   } catch (err) {
-    console.error(`Error writing ${filePath}: ${err.message}`);
+    console.error("Error writing", err);
     throw err; 
   }
 }
-
-module.exports = { loadJSON, saveJSON };
