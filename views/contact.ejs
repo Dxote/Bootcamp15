@@ -1,28 +1,113 @@
-<main class="container mt-5">
-  <h1 class="mb-4">Welcome <%= name %></h1>
-  <p>This is the Contact Page</p>
+<h2>Contact List</h2>
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add Contact</button>
+<table class="table table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Mobile</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% contact.forEach((c, i) => { %>
+      <tr>
+        <td><%= c.name %></td>
+        <td><%= c.mobile %></td>
+        <td>
+          <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#detail<%= i %>">Details</button>
+          <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<%= i %>">Edit</button>
+          <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal<%= i %>">Delete</button>
+        </td>
+      </tr>
 
-  <% if (contact && contact.length > 0) { %>
-    <h3 class="mt-4">Contact List</h3>
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered border-dark align-middle text-center mt-3">
-        <thead class="table-dark">
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Mobile</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% contact.forEach((c) => { %>
-            <tr>
-              <td><%= c.name %></td>
-              <td><%= c.mobile %></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
-  <% } else { %>
-    <div class="alert alert-warning mt-4">No contacts available.</div>
-  <% } %>
-</main>
+      <!-- Detail -->
+      <div class="modal fade" id="detail<%= i %>" tabindex="-1">
+        <div class="modal-dialog"><div class="modal-content">
+          <div class="modal-header"><h5 class="modal-title">Detail Contact</h5></div>
+          <div class="modal-body">
+            <p><b>Name:</b> <%= c.name %></p>
+            <p><b>Mobile:</b> <%= c.mobile %></p>
+            <p><b>Email:</b> <%= c.email || '-' %></p>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- Edit -->
+      <div class="modal fade" id="editModal<%= i %>" tabindex="-1">
+        <div class="modal-dialog"><div class="modal-content">
+          <form action="/contact/edit/<%= i %>" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Contact</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" value="<%= c.name %>" required>
+              </div>
+              <div class="mb-3">
+                <label>Mobile</label>
+                <input type="tel" name="mobile" class="form-control" value="<%= c.mobile %>" pattern="[0-9]{10,15}" required>
+              </div>
+              <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" value="<%= c.email %>" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+          </form>
+        </div></div>
+      </div>
+
+      <!-- Delete -->
+      <div class="modal fade" id="deleteModal<%= i %>" tabindex="-1">
+        <div class="modal-dialog"><div class="modal-content">
+          <form action="/contact/delete/<%= i %>" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Contact</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">Are you sure to delete <strong><%= c.name %></strong>?</div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button class="btn btn-danger" type="submit">Delete</button>
+            </div>
+          </form>
+        </div></div>
+      </div>
+    <% }) %>
+  </tbody>
+</table>
+
+<!-- Add -->
+<div class="modal fade" id="addModal" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content">
+    <form action="/contact/add" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Contact</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label>Name</label>
+          <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label>Mobile</label>
+          <input type="number" name="mobile" class="form-control" placeholder="8-15 Character" pattern="[0-8]{10,15}" required>
+        </div>
+        <div class="mb-3">
+          <label>Email</label>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-success" type="submit">Add</button>
+      </div>
+    </form>
+  </div></div>
+</div>
